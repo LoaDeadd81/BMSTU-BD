@@ -1,4 +1,11 @@
-CREATE TABLE IF NOT EXISTS Engines
+DROP TABLE IF EXISTS Contract CASCADE;
+DROP TABLE IF EXISTS Model CASCADE;
+DROP TABLE IF EXISTS Factory CASCADE;
+DROP TABLE IF EXISTS Engines;
+DROP TABLE IF EXISTS Dealer;
+DROP TABLE IF EXISTS Brand;
+
+CREATE TABLE Engines
 (
     EngineID        INT GENERATED ALWAYS AS IDENTITY,
     HP              INT,
@@ -6,10 +13,11 @@ CREATE TABLE IF NOT EXISTS Engines
     Volume          INT,
     CylindersNumber INT,
     CyclesNumber    INT,
-    Fuel            INT
+    Fuel            INT,
+    Factory         INT
 );
 
-CREATE TABLE IF NOT EXISTS Model
+CREATE TABLE Model
 (
     ModelID      INT GENERATED ALWAYS AS IDENTITY,
     NAME         varchar(100),
@@ -23,7 +31,7 @@ CREATE TABLE IF NOT EXISTS Model
     Brand        INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Factory
+CREATE TABLE Factory
 (
     FactoryID     INT GENERATED ALWAYS AS IDENTITY,
     NAME          varchar(100),
@@ -33,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Factory
     Brand         INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Dealer
+CREATE TABLE Dealer
 (
     DealerID      INT GENERATED ALWAYS AS IDENTITY,
     NAME          varchar(100),
@@ -43,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Dealer
     ExtraCharge   INT
 );
 
-CREATE TABLE IF NOT EXISTS Brand
+CREATE TABLE Brand
 (
     BrandID        INT GENERATED ALWAYS AS IDENTITY,
     NAME           varchar(100),
@@ -53,7 +61,7 @@ CREATE TABLE IF NOT EXISTS Brand
     Revenue        INT
 );
 
-CREATE TABLE IF NOT EXISTS Contract
+CREATE TABLE Contract
 (
     ContractID    INT GENERATED ALWAYS AS IDENTITY,
     Brand         INT NOT NULL,
@@ -63,5 +71,3 @@ CREATE TABLE IF NOT EXISTS Contract
     Cost          INT,
     StartDate     DATE
 );
-
-set datestyle to DMY

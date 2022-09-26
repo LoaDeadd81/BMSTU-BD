@@ -30,7 +30,8 @@ def engines():
             cylinder_num = random.randint(2, 4)
             cycle_num = random.choice([2, 4])
             fuel = random.choice([80, 92, 95, 98])
-            ow_writer.writerow([hp] + [torque] + [volume] + [cylinder_num] + [cycle_num] + [fuel])
+            fact_id = random.randint(1, REC_NUM)
+            ow_writer.writerow([hp] + [torque] + [volume] + [cylinder_num] + [cycle_num] + [fuel] + [fact_id])
 
 
 def get_vin():
