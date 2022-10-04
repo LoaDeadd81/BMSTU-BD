@@ -21,7 +21,7 @@ dtf = faker.providers.date_time.Provider(fake)
 
 
 def engines():
-    with open('./csv/engines.csv', 'w', newline='') as csvfile:
+    with open('csv/engines.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         for i in range(REC_NUM):
             hp = random.randint(10, 200)
@@ -42,7 +42,7 @@ def get_vin():
 
 
 def model():
-    with open('./csv/model.csv', 'w', newline='') as csvfile:
+    with open('csv/model.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         vin_set = set()
         for i in range(REC_NUM):
@@ -68,7 +68,7 @@ def model():
 
 
 def brands():
-    with open('./csv/brands.csv', 'w', newline='') as csvfile:
+    with open('csv/brands.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         set_name = set()
         for i in range(REC_NUM):
@@ -87,7 +87,7 @@ def brands():
 
 
 def dealer():
-    with open('./csv/dealers.csv', 'w', newline='') as csvfile:
+    with open('csv/dealers.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         set_name = set()
         for i in range(REC_NUM):
@@ -106,7 +106,7 @@ def dealer():
 
 
 def factory():
-    with open('./csv/factories.csv', 'w', newline='') as csvfile:
+    with open('csv/factories.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         set_name = set()
         for i in range(REC_NUM):
@@ -126,7 +126,7 @@ def factory():
 
 
 def contracts():
-    with open('./csv/contracts.csv', 'w', newline='') as csvfile:
+    with open('csv/contracts.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         for i in range(REC_NUM):
             id = i
