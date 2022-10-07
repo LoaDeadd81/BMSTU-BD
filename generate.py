@@ -20,17 +20,23 @@ compf = faker.providers.company.Provider(fake)
 dtf = faker.providers.date_time.Provider(fake)
 
 
+ENG_NUM = 400
+MODEL_NUM = 500
+FAB_NUM = 250
+DEALER_NUM = 150
+BRAND_NUM = 200
+
 def engines():
     with open('csv/engines.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
-        for i in range(REC_NUM):
+        for i in range(ENG_NUM):
             hp = random.randint(10, 200)
             torque = random.randint(20, 160)
             volume = random.randint(50, 1200)
             cylinder_num = random.randint(2, 4)
             cycle_num = random.choice([2, 4])
             fuel = random.choice([80, 92, 95, 98])
-            fact_id = random.randint(1, REC_NUM)
+            fact_id = random.randint(1, FAB_NUM)
             ow_writer.writerow([hp] + [torque] + [volume] + [cylinder_num] + [cycle_num] + [fuel] + [fact_id])
 
 
@@ -45,7 +51,7 @@ def model():
     with open('csv/model.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         vin_set = set()
-        for i in range(REC_NUM):
+        for i in range(MODEL_NUM):
             id = i
             name = vfake.vehicle_model()
 
@@ -59,8 +65,8 @@ def model():
             acceleration = random.uniform(1, 5)
             start_year = random.randint(2000, 2018)
             gears_num = random.randint(4, 7)
-            eng_id = random.randint(1, REC_NUM)
-            brand_id = random.randint(1, REC_NUM)
+            eng_id = random.randint(1, ENG_NUM)
+            brand_id = random.randint(1, BRAND_NUM)
 
             ow_writer.writerow(
                 [name] + [vin] + [cost] + [max_speed] + [acceleration] + [start_year] + [
@@ -71,7 +77,7 @@ def brands():
     with open('csv/brands.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         set_name = set()
-        for i in range(REC_NUM):
+        for i in range(BRAND_NUM):
             id = i
 
             name = compf.bs()
@@ -90,7 +96,7 @@ def dealer():
     with open('csv/dealers.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         set_name = set()
-        for i in range(REC_NUM):
+        for i in range(DEALER_NUM):
             id = i
 
             name = compf.bs()
@@ -109,7 +115,7 @@ def factory():
     with open('csv/factories.csv', 'w', newline='') as csvfile:
         ow_writer = csv.writer(csvfile, delimiter=';')
         set_name = set()
-        for i in range(REC_NUM):
+        for i in range(FAB_NUM):
             id = i
 
             name = compf.bs()
@@ -119,8 +125,8 @@ def factory():
 
             country = adrf.country(max_length=10)
             models_per_year = random.randint(5000, 20000)
-            worker_nums = random.randint(15, 30)
-            brand_id = random.randint(1, REC_NUM)
+            worker_nums = random.randint(15, 1000)
+            brand_id = random.randint(1, BRAND_NUM)
 
             ow_writer.writerow([name] + [country] + [models_per_year] + [worker_nums] + [brand_id])
 
@@ -130,8 +136,8 @@ def contracts():
         ow_writer = csv.writer(csvfile, delimiter=';')
         for i in range(REC_NUM):
             id = i
-            brand_id = random.randint(1, REC_NUM)
-            dealer_id = random.randint(1, REC_NUM)
+            brand_id = random.randint(1, BRAND_NUM)
+            dealer_id = random.randint(1, DEALER_NUM)
             num_moto = random.randint(500, 1500)
             duration = random.randint(1, 5)
             cost = random.randint(1, 120)
