@@ -23,7 +23,7 @@ dtf = faker.providers.date_time.Provider(fake)
 ENG_NUM = 400
 MODEL_NUM = 500
 FAB_NUM = 250
-DEALER_NUM = 150
+DEALER_NUM = 1000
 BRAND_NUM = 200
 
 def engines():
