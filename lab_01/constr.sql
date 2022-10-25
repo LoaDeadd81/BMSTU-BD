@@ -16,7 +16,7 @@ ALTER TABLE contract
     ADD CONSTRAINT FKBrandC FOREIGN KEY (brand) REFERENCES brand (brandid),
     ADD CONSTRAINT FKDealerC FOREIGN KEY (dealer) REFERENCES dealer (dealerid),
     ADD CONSTRAINT checkModelsPerYear CHECK (modelsperyear > 0),
-    ADD CONSTRAINT checkDuration CHECK (duration > 0),
+    ADD CONSTRAINT checkDuration CHECK (duration > -1),
     ADD CONSTRAINT checkCost CHECK (cost > 0),
     ADD CONSTRAINT checkStartDate CHECK (startdate < '23/09/2022');
 
