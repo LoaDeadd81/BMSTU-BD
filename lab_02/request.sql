@@ -81,12 +81,11 @@ from ModelFactory;
 
 -- 12. Инструкция SELECT, использующая вложенные коррелированные подзапросы в качестве производных таблиц в предложении FROM.
 select name, maxc
-from brand b join (
-    select brand, max(cost) as maxc
-    from model
-    group by brand
-    order by maxc desc
-) m on b.brandid = m.brand;
+from brand b
+         join (select brand, max(cost) as maxc
+               from model
+               group by brand
+               order by maxc desc) m on b.brandid = m.brand;
 
 -- 13. Инструкция SELECT, использующая вложенные подзапросы с уровнем вложенности 3.
 select name, vin, cost
@@ -116,7 +115,8 @@ VALUES ('aaa', 'rus', 1000, 20, 20);
 -- 17. Многострочная инструкция INSERT, выполняющая вставку в таблицу результирующего набора данных вложенного подзапроса.
 insert into contract(brand, dealer, modelsperyear, duration, cost, startdate)
 select bc.brand, bc.dealer, 2000, 10, 100000, to_date('07 10 2022', 'DD MM YYYY')
-from (brand b join contract c on b.brandid = c.brand) bc join dealer d on bc.dealer = d.dealerid
+from (brand b join contract c on b.brandid = c.brand) bc
+         join dealer d on bc.dealer = d.dealerid
 where bc.country = d.country;
 
 -- 18. Простая инструкция UPDATE.
@@ -141,7 +141,8 @@ delete
 from model m
 where engine in (select engineid
                  from engines e
-                 where m.engine = e.engineid and volume < 100);
+                 where m.engine = e.engineid
+                   and volume < 100);
 
 -- 22. Инструкция SELECT, использующая простое обобщенное табличное выражение
 with fact(brid, workernum) as (select brand, sum(workernumber)
@@ -203,51 +204,72 @@ where num = 1;
 -- Защита
 -- Все имена диллеров, у которых контракт с определённым брендом
 select bc.name
-    from (brand b join contract c on b.brandid = c.brand) bc join dealer d on bc.dealer = d.dealerid
+from (brand b join contract c on b.brandid = c.brand) bc
+         join dealer d on bc.dealer = d.dealerid
 group by bc.name
-having count(*) = (select bc.name from  (brand b join contract c on b.brandid = c.brand) bc join dealer d on bc.dealer = d.dealerid)
+having count(*) = (select bc.name
+                   from (brand b join contract c on b.brandid = c.brand) bc
+                            join dealer d on bc.dealer = d.dealerid);
 
 select d.dealerid, d.name, bc.name
-    from (brand b join contract c on b.brandid = c.brand) bc join dealer d on bc.dealer = d.dealerid
+from (brand b join contract c on b.brandid = c.brand) bc
+         join dealer d on bc.dealer = d.dealerid
 where bc.name = 'harness viral infrastructures';
 
 -- доп
 
-drop table if exists tb1;
-drop table if exists tb2;
+drop table if exists table1;
+drop table if exists table2;
 
-create temp table tb1
+create temp table table1
 (
-    tb1ID       int,
-    var1        varchar,
-    valid_from  date,
-    valid_to    date
+    tb1ID      int,
+    var        varchar,
+    valid_from date,
+    valid_to   date
 );
 
-create temp table tb2
+create temp table table2
 (
-    tb1ID       int,
-    var1        varchar,
-    valid_from  date,
-    valid_to    date
+    tb2ID      int,
+    var        varchar,
+    valid_from date,
+    valid_to   date
 );
 
-insert into tb1
-values  (1, 'A', to_date('01 09 2018', 'DD MM YYYY'), to_date('15 09 2018', 'DD MM YYYY')),
-        (1, 'B', to_date('16 09 2018', 'DD MM YYYY'), to_date('31 12 5999', 'DD MM YYYY'));
+insert into table1
+values (1, 'A', to_date('01 09 2018', 'DD MM YYYY'), to_date('15 09 2018', 'DD MM YYYY')),
+       (1, 'B', to_date('16 09 2018', 'DD MM YYYY'), to_date('31 12 5999', 'DD MM YYYY'));
 
-insert into tb2
-values  (1, 'A', to_date('01 09 2018', 'DD MM YYYY'), to_date('18 09 2018', 'DD MM YYYY')),
-        (1, 'B', to_date('19 08 2018', 'DD MM YYYY'), to_date('31 12 5999', 'DD MM YYYY'));
-
-select *
-from tb1;
+insert into table2
+values (1, 'A', to_date('01 09 2018', 'DD MM YYYY'), to_date('18 09 2018', 'DD MM YYYY')),
+       (1, 'B', to_date('19 09 2018', 'DD MM YYYY'), to_date('31 12 5999', 'DD MM YYYY'));
 
 select *
-from tb2;
+from table1;
 
-select t1.tb1ID,
-    from tb1 t1 join tb2 t2 on t1.tb1ID = t2.tb1ID and t1.valid_from < t2.valid_to and t2.valid_from < t1.valid_to
+select *
+from table2;
+
+select tb1.tb1ID as id,
+       tb1.var as var1,
+       tb2.var as var2,
+       case
+           when tb1.valid_from > tb2.valid_from
+               then tb1.valid_from
+           else tb2.valid_from end
+               as valid_from,
+       case
+           when tb1.valid_to < tb2.valid_to
+               then tb1.valid_to
+           else tb2.valid_to end
+               as valid_to
+from table1 tb1
+         join table2 tb2
+              on tb1.tb1ID = tb2.tb2ID
+                  and tb1.valid_to > tb2.valid_from
+                  and tb1.valid_from < tb2.valid_to;
+
 
 
 
