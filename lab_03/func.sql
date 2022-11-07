@@ -209,6 +209,8 @@ begin
 end;
 $$ language plpgsql;
 
+drop trigger if exists b_logs on brand;
+
 create trigger b_logs
     after insert or update or delete
     on brand
