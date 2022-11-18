@@ -252,6 +252,8 @@ begin
 end;
 $$ language plpgsql;
 
+drop trigger if exists c_del on CView;
+
 create or replace trigger c_del
     instead of delete
     on CView
