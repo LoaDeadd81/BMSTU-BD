@@ -298,10 +298,23 @@ $$
 DECLARE
     r record;
 BEGIN
-    for r in (select contractid, cost from contract where duration = dur) loop
-        raise notice '%', r;
+    for r in (select contractid, cost from contract where duration = dur)
+        loop
+            raise notice '%', r;
         end loop;
 END
 $$ language plpgsql;
 
 call def(2);
+
+drop table if exists Champs;
+create table if not exists Champs
+(
+    Brand int references brand (brandid),
+    plaxe int,
+    racing_series varchar
+);
+
+insert into Champs
+values (1, 2, 'aaaa');
+

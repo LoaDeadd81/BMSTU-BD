@@ -212,7 +212,15 @@ values ('[
 ]');
 
 
--- jsonb_array_elements - Разворачивает массив JSON в набор значений JSON.
 SELECT jsonb_array_elements(data)
 FROM car1;
+
+select * from information_schema.triggers;
+
+select trigger_name
+from information_schema.triggers
+where event_manipulation = 'DELETE';
+
+select *
+from pg_trigger;
 

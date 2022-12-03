@@ -6,7 +6,7 @@ create or replace function get_max_car_price_clr(brand_country varchar)
 $$
     res = plpy.execute(f"\
     select max(m.cost)\
-    from public.model m join public.brand b on b.brandid = m.brand \
+    from model m join brand b on b.brandid = m.brand \
     where b.country = '{brand_country}' ;\
     ")
 
@@ -155,3 +155,60 @@ $$
 $$ language plpython3u;
 
 select * from get_sale_data();
+
+drop view if exists CView;
+
+create view CView as
+select *
+from contract;
+
+create or replace function c_d_clr()
+    returns trigger as
+$$
+    insert_plan = plpy.prepare(" \
+        update CView \
+        set duration = 0 \
+        where contractid = $1  \
+        ", ['int'])
+
+    if TD["event"] == 'DELETE':
+        plpy.execute(insert_plan, [TD["old"]["contractid"]])
+$$ language plpython3u;
+
+create trigger d_clr
+    instead of delete
+    on CView
+    for each row
+execute procedure c_d_clr();
+
+select *
+from CView
+where contractid = 102;
+
+delete
+from CView
+where contractid = 102;
+
+select *
+from CView
+where contractid = 102;
+
+create or replace function del_contracts() returns trigger as
+$$
+begin
+    if tg_op = 'DELETE' then
+        update CView
+        set duration = 0
+        where contractid = old.contractid;
+        return old;
+    end if;
+    return null;
+end;
+$$ language plpgsql;
+
+create or replace trigger c_del
+    instead of delete
+    on CView
+    for each row
+execute procedure del_contracts();
+

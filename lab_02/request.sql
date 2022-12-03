@@ -185,11 +185,12 @@ from otv_level;
 -- 24. Оконные функции. Использование конструкций MIN/MAX/AVG OVER()
 
 select country,
-       min(extracharge) over (partition by country) as minextra,
+       min(extracharge) over (partition by country ) as minextra,
        avg(extracharge) over (partition by country) as avgextra,
        max(extracharge) over (partition by country) as maxextra,
        row_number() over (partition by country)     as num
-from dealer;
+from dealer
+group by country;
 
 -- 25. Оконные фнкции для устранения дублей
 select country, minextra, avgextra, maxextra
@@ -271,5 +272,6 @@ from table1 tb1
                   and tb1.valid_from < tb2.valid_to;
 
 
-
+select b.name, em.engineid, em.hp, em.volume
+from (engines e join model m on e.engineid = m.engine) em join brand b on em.brand = b.brandid
 
