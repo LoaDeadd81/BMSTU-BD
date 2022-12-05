@@ -315,6 +315,4 @@ create table if not exists Champs
     racing_series varchar
 );
 
-insert into Champs
-values (1, 2, 'aaaa');
 
